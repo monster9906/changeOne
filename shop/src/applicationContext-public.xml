@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.1.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+		<!-- 开启注解扫描 -->
+		<context:component-scan base-package="cn.it.shop.."/>
+		<!-- <context:property-placeholder location="classpath:conn.properties"/> -->
+		
+		<!-- 支持xml方式 -->
+		<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+			<property name="locations">
+				<array>
+					<value>classpath:conn.properties</value>
+				</array>
+			</property>
+		</bean>
+		
+		<!-- 支持注解方式 -->
+		<bean id="prop" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+			<property name="locations">
+				<array>
+					<value>classpath:conn.properties</value>
+					<value>classpath:public.properties</value>
+					<value>classpath:pay.properties</value>
+				</array>
+			</property>
+		</bean>
+		
+	<!-- c3p0配置 -->
+	<bean id="dataSource" class="${dataSource}">
+		 <property name="driverClass" value="${driverClass}"></property>
+        <property name="jdbcUrl" value="${jdbcUrl}"></property>
+        <property name="user" value="${user}"></property>
+        <property name="password" value="${password}"></property>
+	</bean>
+	
+	 <!-- 配置sessionFactory -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+    	<property name="dataSource" ref="dataSource" />
+		<property name="configLocations" value="classpath:hibernate.cfg.xml" />
+    </bean> 
+	
+	<!-- 配置sessionFactory管理器 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!-- 配置通知 -->
+	<tx:advice id="advice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="save*" propagation="REQUIRED"/>
+			<tx:method name="update*" propagation="REQUIRED"/>
+			<tx:method name="delete*" propagation="REQUIRED"/>
+			<tx:method name="*" propagation="SUPPORTS"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 配置aop -->
+	<aop:config>
+		<aop:advisor advice-ref="advice" pointcut="execution(* cn.it.shop.service.Impl.*.*(..))" />
+		<aop:advisor advice-ref="advice" pointcut="execution(* cn.it.shop.dao.Impl.*.*(..))" />
+	</aop:config>
+	
+</beans>

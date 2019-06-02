@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2019-5-9 23:10:54 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="cn.it.shop.model.FaceInfo" table="FACEINFO">
+        <id name="fid" type="java.lang.Integer">
+            <column name="FID" />
+            <generator class="native"/>
+        </id>
+        <property name="fname" type="java.lang.String">
+            <column name="FNAME" />
+        </property>
+        <property name="fcontent" type="java.lang.String">
+            <column name="FCONTENT" />
+        </property>
+    </class>
+</hibernate-mapping>

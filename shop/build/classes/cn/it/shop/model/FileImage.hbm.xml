@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2019-5-9 23:10:54 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="cn.it.shop.model.FileImage" table="FILEIMAGE">
+        <id name="file" type="java.io.File">
+            <column name="FILE" />
+            <generator class="assigned" />
+        </id>
+        <property name="fileContentType" type="java.lang.String">
+            <column name="FILECONTENTTYPE" />
+        </property>
+        <property name="fileFileName" type="java.lang.String">
+            <column name="FILEFILENAME" />
+        </property>
+    </class>
+</hibernate-mapping>

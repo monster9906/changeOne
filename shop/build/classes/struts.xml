@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+		<package name="shop" extends="json-default" namespace="/">
+			<global-results>
+				<result name="aindex">WEB-INF/main/aindex.jsp</result>
+				<result name="index">/index.jsp</result>
+				<result name="error">/error.jsp</result>
+				<result name="ulogin" type="redirect">ulogin.jsp</result>
+				<result name="stream" type="stream">
+					<param name="inpuName">inputStream</param>
+				</result>
+			</global-results>
+			
+			<global-exception-mappings>
+				<exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>
+			</global-exception-mappings>
+			
+			<action name="category_*" class="categoryAction" method="{1}">
+				<result name="jsonMap" type="json">
+					<!-- 要转换的json数据 -->
+					<param name="root">pageMap</param>
+					<!--配置黑名单 即不显示数据   正则表达式-->
+					<param name="excludeProperties">
+						rows\[\d\]\.account\.pass
+					</param>
+				</result>
+				<result name="josnList" type="json">
+					<param name="root">josnList</param>
+					<param name="excludeProperties">\[\d\]\.account</param>
+				</result>
+			</action>
+			
+			<action name="account_*" class="accountAction" method="{1}">
+				<result name="index">/index.jsp</result>
+				<result name="josnList" type="json">
+					<param name="root">josnList</param>
+					<param name="excludeProperties">\[\d\]\.pass</param>
+				</result>
+			</action>
+			
+			<action name="product_*" class="productAction" method="{1}">
+				<result name="jsonMap" type="json">
+					<param name="root">pageMap</param>
+					<param name="excludeProperties">
+						rows\[\d+\]\.category\.account,
+						rows\[\d+\]\.date
+					</param>
+				</result>
+				<result name="stream" type="stream">
+					<param name="inpuName">inputStream</param>
+				</result>
+				<result name="detail">/detail.jsp</result>
+			</action>
+			
+			<action name="send_*_*" class="sendAction">
+				<result name="send">/WEB-INF/{1}/{2}.jsp</result>
+				<result name="login">/WEB-INF/main/aindex.jsp</result>
+			</action>
+			
+			<action name="sorder_*" class="sorderAction" method="{1}">
+				<result name="showCar">/showCar.jsp</result>
+				<result name="jsonList" type="json"></result>
+			</action>
+			
+			<action name="forder_*" class="forderAction" method="{1}">
+				<result name="showCar">/showCar.jsp</result>
+				<result name="bank">/user/bank.jsp</result>
+			</action>
+			
+			<action name="pay_*" class="payAction" method="{1}">
+				<result name="pay">/user/pay.jsp</result>
+			</action>
+			
+			<action name="user_*" class="cn.it.shop.action.UserAction" method="{1}">
+				<result name="goURL" type="redirect">${#session.goURL}</result>
+				<result name="login">/ulogin.jsp</result>
+			</action>
+			
+			<action name="houtai_*" class="cn.it.shop.action.HouTaiUserAction" method="{1}">
+				<result name="jsonMap" type="json">
+					<param name="root">faceMap</param>
+				</result>
+			</action>
+			
+		</package>
+		
+</struts>

@@ -1,0 +1,14 @@
+<ehcache>
+	<!-- ehcache支持硬盘级缓存, 此处设置硬盘存储存储的目录, 查看的时候要显示隐藏文件 -->
+    <diskStore path="java.io.tmpdir"/>
+        
+        <defaultCache
+            maxElementsInMemory="500"
+            eternal="false"
+            timeToIdleSeconds="60"
+            timeToLiveSeconds="120"
+            overflowToDisk="true"
+            memoryStoreEvictionPolicy="LRU"
+            />
+            
+</ehcache>
